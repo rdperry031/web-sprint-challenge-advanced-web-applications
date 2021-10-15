@@ -1,15 +1,14 @@
 import axios from 'axios';
 
 const axiosWithAuth = ()=> {
-     const token = window.localStorage.getItem('token')
+    const token = localStorage.getItem('token')
 
-     return axios.create({
+    return axios.create({
         headers: {
             Authorization: token
-       }
-     })
+        },
+    })
 }
-
 export default axiosWithAuth;
 
 //Task List:
