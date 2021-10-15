@@ -1,16 +1,63 @@
-import React from 'react';
+import axios from 'axios';
+import React, { useState } from 'react';
 import styled from 'styled-components';
+import { useHistory } from 'react-router';
 
 const Login = () => {
+    
+    const initialValues = { username: null, password: null}
+    const [formValues, setFormValues] = useState(initialValues);
+    const [error, setError] = useState(null)
+    const { push } = useHistory();
+    
+    const handleChange = e => {
+        setFormValues({...formValues, [e.target.name]: e.target.value});
+    }
+    
+    const handleSubmit = e => {
+        e.preventDefault();
+        axios.post(`http://localhost:5000/api/login`, formValues)
+        .then(res => {
+            window.localStorage.setItem('token', res.data.payload)
+            push('/view');
+        })
+        .catch(err => setError(err.response.data.error));
+        
+    }
     
     return(<ComponentContainer>
         <ModalContainer>
             <h1>Welcome to Blogger Pro</h1>
             <h2>Please enter your account information.</h2>
-        </ModalContainer>
-    </ComponentContainer>);
-}
+        
+       <form onSubmit={handleSubmit}>
+       <label htmlFor='username'>Username</label>
+        <input
+           id = 'username'
+           value = {formValues.username}
+           name = 'username'
+           onChange = {handleChange}
+           />
+       <label htmlFor='password'>Password</label>
+        <input
+           id = 'password'
+           value = {formValues.password}
+           name = 'password'
+           onChange = {handleChange}
+           type='password'
+           />
+       <button id='submit'>login</button>
+     </form>
+   
 
+   <p id="error">{error}</p> 
+   </ModalContainer>
+    </ComponentContainer>);
+      
+      
+      
+      
+}
 export default Login;
 
 //Task List
@@ -26,6 +73,7 @@ const ComponentContainer = styled.div`
     justify-content: center;
     align-items: center;
     display:flex;
+    
 `
 
 const ModalContainer = styled.div`
