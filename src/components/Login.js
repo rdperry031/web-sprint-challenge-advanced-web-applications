@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useHistory } from 'react-router';
 
@@ -18,12 +18,14 @@ const Login = () => {
         e.preventDefault();
         axios.post(`http://localhost:5000/api/login`, formValues)
         .then(res => {
-            window.localStorage.setItem('token', res.data.payload)
+            localStorage.setItem('token', res.data.token)
             push('/view');
         })
         .catch(err => setError(err.response.data.error));
         
     }
+
+    
     
     return(<ComponentContainer>
         <ModalContainer>
