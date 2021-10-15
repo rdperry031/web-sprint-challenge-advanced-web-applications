@@ -5,18 +5,17 @@ import Article from './Article';
 import EditForm from './EditForm';
 import axiosWithAuth from '../utils/axiosWithAuth';
 import articleService from '../services/articleServices';
-import { useHistory } from 'react-router-dom';
+
 
 const View = (props) => {
     const [articles, setArticles] = useState([]);
     const [editing, setEditing] = useState(false);
     const [editId, setEditId] = useState();
 
-    const { push } = useHistory();
     useEffect(() => {
         articleService()
         .then(res => {
-            setArticles(res.data)
+          setArticles(res)
         })
         .catch(err => console.log(err))
     },[])
@@ -26,7 +25,6 @@ const View = (props) => {
         .delete(`http://localhost:5000/api/articles/${id}`)
             .then(res => {
                setArticles(res.data)
-                push('/view')
                 
             })
     
