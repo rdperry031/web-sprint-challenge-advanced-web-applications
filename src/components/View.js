@@ -26,13 +26,19 @@ const View = (props) => {
         .delete(`http://localhost:5000/api/articles/${id}`)
             .then(res => {
                setArticles(res.data)
-                // setArticles(articles.filter(article => article.id !== Number(res.data)))
                 push('/view')
+                
             })
     
      }
 
     const handleEdit = (article) => {
+        axiosWithAuth()
+        .put(`http://localhost:5000/api/articles/${article.id}`, article)
+        .then(res => {
+            setArticles(res.data)
+            setEditing(false)
+        })
     }
 
     const handleEditSelect = (id)=> {
